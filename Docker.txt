@@ -1,0 +1,51 @@
+Docker
+
+docker pull image
+docker run -it centOs /bin/bash
+docker rmi <image Id>
+docker ps :list containers
+docker inspect imageId/containerId
+docker ps -a : list all containers irrespective of there states
+docker history ImageId: Docker images are constructed in layers, each layer corresponding to a first approximation to a line in a Dockerfile . The history command shows these layers, and the commands used to create them.
+docker top containerId : shows top processes running within the containers.
+docker stop containerId : stops runnig container.
+docker rm containerId : delete container
+docker stats containerId: CPU and memory utilization of the container
+docker attach containerId: Use docker attach to attach your terminal's standard input, output, and error (or any combination of the three) to a running container using the container's ID or name. This allows you to view its ongoing output or to control it interactively, as though the commands were running directly in your terminal.
+docker pause containerId : pause the processes running in the container. The docker pause command suspends all processes in the specified containers.
+docker unpause containerId: unpause the processes in the container
+
+What is the difference between kill and stop container?
+Both commands will terminate containers, the main difference being that the stop command allows the container to terminate gracefully, and the kill command terminates it immediately.
+
+docker kill containerId
+
+docker build -t image:tag path/to/DockerFile
+docker tag imageId repositoryName
+docker push repositoryName
+
+CMD: This command is used to execute a command at runtime when the container is executed.
+ENTRYPOINT: ENTRYPOINT is an essential tool for configuring Docker containers. It sets the default command that executes when a container starts from an image, defining its primary function. You can use ENTRYPOINT to run specific applications, help in CI/CD pipelines, or combine with CMD for more flexible container behavior. CMD is the default set of arguments that are supplied to the ENTRYPOINT process.
+
+ENV: This command is used to set environment variables in the container.
+ENV var1=Tutorial var2=point 
+
+WORKDIR: This command is used to set the working directory of the container.
+
+we can use --link option on docker run command to link containers.
+docker run -v option is used to map container volume(can be seen in docker inspect cmd) to host folder.
+
+docker volume create --name=volname
+docker volume ls
+
+bind mount vs volume
+volume: full control of docker, no other process can access
+bind mount: other process can also access
+both can be attached to container using -v option
+
+docker logs containerId
+docker logs -f containerId
+We have daemon level and container level logging
+
+docker-compose up
+docker-compose.yml 

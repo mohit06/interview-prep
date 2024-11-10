@@ -1,0 +1,45 @@
+public class TestClass {
+public static void main(String[] args) {
+     someMethod(null);
+}
+public static void someMethod(Object o) {
+System.out.println("Object method Invoked");
+}
+public static void someMethod(String s) {
+System.out.println("String method Invoked");
+}
+}
+//Output: String method invoked. Object is super class for String so compiler choose String over Object. If we have String and StringBuffer then it will be ambiguous.
+
+
+class AA{
+     public void m1(){
+       System.out.println("A");
+      }
+   }
+class BB extends AA {
+    public void m1(){
+        System.out.println("B");
+    }
+    public static void main(String[] args) {
+        AA a = new BB();
+        a.m1();
+
+    }
+}
+// Output: B
+
+
+  Map<String,String> map = new HashMap<>();
+       map.put(new String("a"),"a");
+        map.put(new String("a"),"b");
+        System.out.println(map.size());
+==> 1
+
+  Map<Emp,String> map = new HashMap<>();
+       map.put(new Emp("a"),"a");
+        map.put(new Emp("a"),"b");
+        System.out.println(map.size());
+==> 2
+Reason is HashCode and equals are overriden in String class but it is not so in Emp class. If we override them so that same hashCode is generated and equals return true then map with Emp will have size 1 instead of 2.
+

@@ -1,0 +1,216 @@
+		List<Integer> list = Arrays.asList(23,4,7,11,111,-9,0,9,23,4,4);
+		
+		//Sum of integers in the list using streams
+		int sum = list.stream().reduce(0,(a,b) -> a+b);
+		System.out.println(sum);
+		
+		//Average of numbers present in the list using streams
+		double avg = list.stream().mapToInt(e -> e).average().getAsDouble();
+		System.out.println(avg);
+		
+		//Square the elements of the list and get the avg of numbers greater than 100 in the list.
+		avg = list.stream().map(e -> e * e).mapToInt(e -> e).filter(e -> e > 100).average().getAsDouble();
+		System.out.println(avg);
+		
+		System.out.println("*Even Numbers from the list:*");
+		list.stream().filter(e -> e % 2 == 0).forEach(System.out::println);
+		System.out.println("*******************");
+		
+		//list of numbers that starts with 2
+		list.stream().map(e -> e + "").filter(e -> e.startsWith("2")).forEach(System.out::println);
+		
+		//duplicate numbers in streams
+		System.out.println("*Duplicates in stream:*");
+		list.stream().filter(e -> Collections.frequency(list, e) >= 2).distinct().forEach(System.out::println);
+		System.out.println("********************");
+		
+		//max and min in list
+		int max = list.stream().max(new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				// TODO Auto-generated method stub
+				if(o1 < o2) return -1;
+				else if(o1 > o2) return 1;
+				return 0;
+			}
+			
+		}).get();
+		System.out.println("MAX: "+ max);
+		
+		int min = list.stream().min(new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				// TODO Auto-generated method stub
+				if(o1 < o2) return -1;
+				else if(o1 > o2) return 1;
+				return 0;
+			}
+			
+		}).get();
+		System.out.println("MIN: "+ min);
+		
+		System.out.println("***************************");
+		
+		//sort list in descending order
+		list.stream().sorted(new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				// TODO Auto-generated method stub
+				if(o1 < o2) return 1;
+				else if(o1 > o2) return -1;
+				return 0;
+			}
+			
+		}).forEach(System.out::println);
+		
+		System.out.println("*****************************");
+		
+		list.stream().skip(5).forEach(System.out::println);
+		
+		
+        //sum of first 2 elements
+		sum = list.stream().limit(2).reduce((a,b)->a+b).get();
+		System.out.println(sum);
+		
+		//second highest and second lowest
+		list.stream().sorted().distinct().skip(1).findFirst().get();
+		int secH = list.stream().sorted(new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				// TODO Auto-generated method stub
+				if(o1 < o2) return 1;
+				else if(o1 > o2) return -1;
+				return 0;
+			}
+			
+		}).distinct().skip(1).findFirst().get();
+		
+		System.out.println("secH="+secH);
+		
+		
+		
+		
+		
+		
+		
+		
+		/////////////////////////////////////EMP/////////////////////////
+		
+		List<Emp> list = Arrays.asList(
+				new Emp(1,1000,"e1","d1"),
+				new Emp(2,2000,"e2","d2"),
+				new Emp(3,1000,"e3","d3"),
+				new Emp(4,2000,"e4","d1"),
+				new Emp(5,2000,"e5","d2"),
+				new Emp(6,2000,"e6","d3"),
+				new Emp(7,1000,"e7","d1")
+				
+				); 
+		
+		//asc in salary but desc in id
+		list.stream().sorted(new Comparator<Emp>() {
+
+			@Override
+			public int compare(Emp o1, Emp o2) {
+				// TODO Auto-generated method stub
+				if(o1.getSalary() < o2.getSalary())return -1;
+				else if(o1.getSalary() > o2.getSalary()) return 1;
+				else {
+					if(o1.getId() > o2.getId()) {
+						return -1;
+					}else if(o1.getId() < o2.getId()) {
+						return 1;
+					}
+					return 0;
+				}
+			}}).forEach(System.out::println);;
+		
+		//Emp with min salary and id
+		Emp e =list.stream().min(new Comparator<Emp>() {
+
+			@Override
+			public int compare(Emp o1, Emp o2) {
+				// TODO Auto-generated method stub
+				if(o1.getSalary() < o2.getSalary())return -1;
+				else if(o1.getSalary() > o2.getSalary()) return 1;
+				else {
+					if(o1.getId() > o2.getId()) {
+						return -1;
+					}else if(o1.getId() < o2.getId()) {
+						return 1;
+					}
+					return 0;
+				}
+			}}).get();
+		
+		System.out.println(e.toString()+"<<<<<<");
+		
+		//how many employees in department d3
+		long c =list.stream().filter(p -> p.getDept() == "d3").count();
+		System.out.println(c);
+		
+		//how many employees in each department
+		Map<String,Long> map = list.stream().collect(Collectors.groupingBy(p -> p.getDept(), Collectors.counting()));
+		System.out.println(map.toString());
+		
+		//Emp with max salary and id in each dept
+		Map<String,Optional<Emp>> map2 = list.stream().collect(Collectors.groupingBy(p -> p.getDept(), Collectors.maxBy(
+				new Comparator<Emp>() {
+
+					@Override
+					public int compare(Emp o1, Emp o2) {
+						if(o1.getSalary() < o2.getSalary())return -1;
+						else if(o1.getSalary() > o2.getSalary()) return 1;
+						else {
+							if(o1.getId() > o2.getId()) {
+								return 1;
+							}else if(o1.getId() < o2.getId()) {
+								return -1;
+							}
+							return 0;
+						}
+					}
+					
+				}
+				)));
+		System.out.println(map2);
+		
+		//count, sum, min, max and avg
+		Map<String,IntSummaryStatistics> map3 = list.stream().collect(Collectors.groupingBy(p -> p.getDept(),Collectors.summarizingInt(Emp::getSalary)));
+		System.out.println(map3);
+
+
+//deptwise list of emp:
+        Map<String,List<Emp>>kl = list.stream().collect(Collectors.groupingBy(Emp::getDept, Collectors.toList()));
+        System.out.println(kl);
+        
+        //list of employees in each dept with salary less than 25000
+                Map<String,List<Emp>>kl = list.stream().collect(Collectors.groupingBy(Emp::getDept, Collectors.filtering(e-> e.getSalary() < 25000, Collectors.toList())));
+        System.out.println(kl);        
+
+
+////////////////////////////////////////////////////
+
+String str = "1,1,1,2,3,3,4,2,1,2,3,4,5,5";
+		
+		Arrays.asList(str.split(",")).stream().map(e -> Arrays.asList(Integer.parseInt(e),
+				(Collections.frequency(Arrays.asList(str.split(",")), e)%2 == 0)?"even":"odd")).distinct().forEach(System.out::println);
+				
+				[1, even]
+				...
+				[5, even] 
+				
+////////////////////////////////////////////
+Completable Future to calculate average of numbers
+
+public class Main {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        List<Integer> list = List.of(1,2,3,4,5);
+        CompletableFuture<Double> avg = CompletableFuture.supplyAsync(()->list.stream().filter(e->e%2==0).toList()).thenApply((ls)->ls.stream().mapToInt(e->e).average().getAsDouble());
+        System.out.println(avg.get());
+    }
+}

@@ -1,0 +1,5 @@
+singleton
+factory method
+proxy
+prototype
+builder

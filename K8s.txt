@@ -1,0 +1,79 @@
+K8s:
+It is a container orchestration(automatic deployment, scaling and management of containers) system.
+Ex: kind, minikube, kubeadm.
+
+Pods: most basic of deployment in k8s. It is a wrapper for a container. pod contains containers. 1 or more containers cqan belong to one pod. Normally, 1 pod has 1 container.
+pods are not visible outside the k8s cluster.
+create yaml and use below command:
+kubectl apply -f first-pod.yaml
+kubectl get all 
+kubectl describe pod <podname>
+kubectl exec <podname> <command that we want to run in pod>
+kubectl exec -it pod_name -c container_name bash
+kubectl get po --show-labels -l release=1
+kubectl delete po/svc <pod/svc name>
+kubectl delete po --all
+kubectl delete -f pods.yaml
+
+Service: pods keep dying and there IPs keep changing. Each service has a name and a IP, Kubernetes cluster guarantees that the name and ip in the service entire lifecycle never change. We can attach services to pods.
+pods can have labels(key-value pairs) and service can have selectors(key-value pairs). Service will choose pods according to the label-selector match.
+
+service types: NodePort, ClusterIP and LoadBalancer
+ClusterIP: no access to service from external environment.
+NodePort: expose a port. External world can access the service.
+nodePort is the configuration in yaml that tell which port will be used by browser to access the service and the value of the port should be greater than 30000.
+LoadBalancer can expose any sensible port like port 80.
+
+When we have code changes, we might want to deploy them to cluster and when we do that then k8s would stop the existing pod and start a new pod by downloading the image. This may take few seconds. There is a way to deploy changes with 0 downtime.
+Deploying pods with 0 downtime:
+Create new yml file and keep release version as a label in the pod.
+Change the selector (release version no.) in the service and data will start forwarding to this new pod. Old pod will also be running but simple be unused.
+
+po => pods
+svc => service
+rs => replicaSet
+deploy => deployment
+
+ReplicaSets: It helps us specify how many instances of pods should be running. If any pod dies then K8s will create new pod. We do not need different yml for rs and pods. We can create rs and provide pods details in it.
+
+Deployment: ReplicaSet + automatic rolling updates with 0 downtime. We can also do rollbacks if something goes wrong.
+If we change the image tag in deployment then a new Deployment with new RS and pods will be created and once this new pods are handing requests then the older deployment RS is set to 0. Old RS is still there but its replicas value is 0. If we want to rollbak then we need to make the replicas of new deployment to 0 and old replicas to 2. 
+
+Networking and Service Discovery:
+If we run multiple containers in the single pod then containers can communicate with each other using localhost. Suppose, we have a java app and a database containers and they are running on a single pod then it is like localhost running java app on port 8080 and database on 3306 , so they can directly communicate.
+If we have different containers in different pods then we need to mention the IP of the service of the pods if we want to communicate with it but when K8s cluster would be restarted then the IPs of the service might get changed. 
+Internally, K8s has a kube-dns service that stores key-value pairs. Key is the service name and the value is the IP address assigned to the service.
+So, in our java application, we can have a string value ( service name ) of database in the URL if we want to connect to it. Internally, the service name will be checked as key in the dns service and its IP will be used to connect.
+
+Namespaces:
+Namespaces in k8s are used to partition resources(pods, deployments, replica sets etc).
+kubectl get ns
+default, kube-public, kube-system
+
+kubectl get po -n kube-system : it would show all the pods in kube-system namespace.
+
+Persistence: When a pod is destroyed, all the data inside the pod is lost. We can store data in persistent volumes which can be a file on the file-system of the host or it could be a real hard-drive/EBS on cloud.
+
+Volume mounts:If we are deploying database container in a pod then all the data will be stored on the container and when the pod goes down, all the data will be lost.
+We can map one local folder to the container's folder and then data will be stored in the local folder outside the container. In yaml, we can have volumeMounts with mountPath(path in the container that we want to map). We want to map this path to some folder outside the container or to some hardrive in cloud etc. To configure that we would need to configure volume in the yaml. Volume can take different things like awsElasticBlockStore or hostPath or azureDisk etc.
+
+PersistentVolumeClaim:
+We can add persistentVolumeClaim in the deployment yml and define what it is in a seperate file. We attache persistentVolumeClaim to pods/deployment and in it, we declare how much storage size we are looking for and we can create multiple volumes each having its own size and k8s will try to find any volume that satisfies the storage size of persistentvolumeclaim(pvc).
+
+StorageClasses: in PVC, we can also tell like what kind of storage are we looking for. Are we looking for SSD drive or magnetic disk.? At runtime, k8s will check for required storageclassname in pvc, required size and accessmode and will try to find pv(persistentVolume) with same storageClassNAme, equal or greater size and correct accessMode.
+
+AWS EKS:
+create 1 EC2 instance and we will login to it using SSH. We will install eksctl in this instance so that we can issue commands. This won't be part of cluster.
+eksctl is commandline tool for Amazon EKS. We also need aws and kubectl commandline. aws comes preinstall on amazon linux.
+With just 1 line we can create cluster.
+
+eksctl create cluster --name=fleetman --nodes-min=3
+
+name of cluster is fleetman and cluster has 3 nodes. 3 EC2 instances will be created. Master node won't be visible to us. Auto-Scaling of EC2 instances will keep checking if the desired number of nodes are always running.
+
+We can also configure storageClass and bind it to pvc directly. Volume will be automatically generated.
+eksctl delete cluster clusterName
+
+
+Logging in K8s Cluster:
+

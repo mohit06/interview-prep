@@ -1,0 +1,43 @@
+Java 8
+Spring Boot + JWT
+Microservices
+Docker
+K8s
+AWS
+Kafka
+
+Java 8 : Whatever notes I have
+Java based design patterns: Singleton, Abstract factory, factory method, proxy, prototype.
+Spring Boot: What ever notes I have
+
+Microservices:
+Characterstics of Microservices
+Drawbacks/Benefits of Microservices
+Decomposition Strategies - By Business Capability and decompose by SubDomain
+Domain Driven design and Bounded Context Concept
+
+Microservices Patterns: 
+Aggregator - Y
+API Gateway - Y
+Chained or Chain of Responsibility - Y
+Service Discovery - Y
+Asynchronous Messaging
+Database or Shared Data
+Event Sourcing
+Branch
+Command Query Responsibility Segregator - Y
+Circuit Breaker - Y
+Decomposition
+Saga Pattern - Y
+Strangler
+Sidecar
+Backends for Frontends
+Event Driven Architecture is same as asynchronous communication - Y
+Externalised Configuration - Y
+BulkHead Pattern
+
+Docker : whatever I have
+K8s: Udemy course
+AWS: EC2, S3, Lambda function, RDS, EKS.
+Kafka
+

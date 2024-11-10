@@ -1,0 +1,3 @@
+Run Kafka:
+
+zookeeper-server-start.sh ..\..\config\zookeeper.properties

@@ -1,0 +1,11 @@
+Advantages of microservices:
+The cost of scaling is comparatively less than the monolithic architecture.
+Larger applications can remain mostly unaffected by the failure of a single module.
+We can create one microservice in one stack and other using some other stack and deploy them.
+Smaller and faster deployments
+
+Disadvantages:
+MAnaging distributes transactions
+Deciding the context of the microservice. Which functionality to include and which to exclude from microservice.
+When 1 service calls another service then there can be latency issues.
+Testing microservices is always challenging.
