@@ -1,3 +1,4 @@
 What is hashing?
-Clone method creates deep copy of object but if the object is composed of another object then that object will be a shallow copy. We need to modify the implementation of clone method to create the deep copy of composed object.
+Clone method creates deep copy of object but if the object is composed of another object then that object will be a shallow copy. 
+We need to modify the implementation of clone method to create the deep copy of composed object.
 

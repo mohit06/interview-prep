@@ -32,7 +32,7 @@ public class BiggerProblem extends Problem {
 has context menu
 
 streams API: collect group by dept and max salary
-How to make HashMap threadsafe at bucket level?
-To create a thread-safe HashMap in Java, I will use the Collections. synchronizedMap method to wrap the HashMap object in a synchronized version of the map.
-How to make a list immutable ? -> Collections.unmodifiableList, List.of, List.copyOf
-ManyToMany relationship : any rule on using list in one and set in other entity class.
+How to make  HashMap threadsafe at bucket level?
+To create a  thread-safe HashMap in Java, I will use the Collections. synchronizedMap method to wrap the HashMap object in a synchronized version of the map.
+How to make  a list immutable ? -> Collections.unmodifiableList, List.of, List.copyOf
+ManyToMany   relationship : any rule on using list in one and set in other entity class.
