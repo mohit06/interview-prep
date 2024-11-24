@@ -1,6 +1,36 @@
 Things I have done on cloud:
 
 Upload Http request to storage account container using BlobClient.
+->We have created a StorageAccountService class annotated with @Service and @Profile("!local & !test"). It implements StorageService interface. This is also an interface that we have created. It has two methods: uploadFile(String content, Path destinationFile); And BufferedInputStream downloadProductMappingFile(String key);
+
+@Autowired private BlobContainerClient blobContainerClient;
+
+@Override
+@Async("threadPoolTaskExecutor")
+public void uploadFile(final String content, final Path destinationFile){
+    byte[] contentBytes = content.getBytes(UTF8);
+    InputStream inputStream = new ByteArrayInputStream(contentBytes);
+    BlobClient blobClient = blobContainerClient.getBlobClient(destinationFile.toString());
+    blobClient.upload(inputStream,true);
+}
+
+@Override
+public BufferedInputStream downloadProductMappingFile(String key){
+
+    BlobClient blob = blobContainerClient.getBlobClient(key);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    blob.downloadStream(outputStream);
+    final byte[] bytes = outputStream.toByteArray();
+    ByteArrayInpytStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+    return new BufferedINputStream(byteArrayInputStream);
+
+}
+
+in app.prop:
+account.storage.connection.string=
+account.storage.url=
+storage.container.name=rest-request
+
 Using KeyVault in Spring Application
 Sending/Receiving messages from service bus queue
 Published Custom metrics(order count per wholesaler) to AzureDashboard. (actuator automatically publishes metrics to customMetrics table in workspace and then I created a KQL and then pin it to azure dashboard).
