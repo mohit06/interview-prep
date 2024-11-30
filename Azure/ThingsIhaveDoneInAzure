@@ -32,8 +32,8 @@ account.storage.url=
 storage.container.name=rest-request
 
 Using KeyVault in Spring Application
-Sending/Receiving messages from service bus queue
+Sending/Receiving messages from service bus queue using JmsListener.
 Published Custom metrics(order count per wholesaler) to AzureDashboard. (actuator automatically publishes metrics to customMetrics table in workspace and then I created a KQL and then pin it to azure dashboard).
 Created Alert email whenever there is an ERROR/Exception in app service logs. (created diagnostic setting to publish logs to AppServiceConsoleLog table and then create an alert rule from Log workspace).
-Configured VM with SonarQube on it. And then added it to Azure Devops pipeline and everytime a build is generated, a sonar qube creates a report that can be viewed in azure ashboard.
+Configured VM with SonarQube on it. And then added it to Azure Devops pipeline and everytime a build is generated, a sonar qube creates a report that can be viewed in sonar dashboard.
 Configured Application Gateway with WAF on it.
